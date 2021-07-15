@@ -188,9 +188,10 @@ def main(folder):
 
 
 
-    scan_path = sys.argv[1]
-    print(f"Start in folder {scan_path}")
-    search_folder = Path(scan_path)
-
+scan_path = sys.argv[1]
+print(f"Start in folder {scan_path}")
+search_folder = Path(scan_path)
+search_folder = search_folder.resolve()
+main(search_folder)
     
 
