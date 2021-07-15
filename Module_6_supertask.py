@@ -3,7 +3,6 @@ from pathlib import Path
 import shutil
 import re
 
-
 CYRILLIC_SYMBOLS = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ'
 TRANSLATION = ("a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
                "f", "h", "ts", "ch", "sh", "sch", "", "y", "e", "u", "ja")
@@ -19,6 +18,7 @@ def normalize(name: str) -> str:
     translated_name = name.translate(TRANS)
     translated_name = re.sub(r"\W", "_", translated_name)
     return translated_name
+
 
 JPEG_IMAGES = []
 JPG_IMAGES = []
@@ -80,7 +80,7 @@ def handle_image(file: Path, root_folder: Path, dist: str):
     new_target_folder = target_folder / ext.upper()
     new_target_folder.mkdir(exist_ok=True)
     new_name = normalize(file.name.replace(ext, "")) + ext
-    file.replace(target_folder / new_name)
+    file.replace(new_target_folder / new_name)
 
 
 def handle_doc(file: Path, root_folder: Path, dist: str):
@@ -90,7 +90,7 @@ def handle_doc(file: Path, root_folder: Path, dist: str):
     new_target_folder = target_folder / ext.upper()
     new_target_folder.mkdir(exist_ok=True)
     new_name = normalize(file.name.replace(ext, "")) + ext
-    file.replace(target_folder / new_name)
+    file.replace(new_target_folder / new_name)
 
 
 def handle_music(file: Path, root_folder: Path, dist: str):
@@ -100,7 +100,7 @@ def handle_music(file: Path, root_folder: Path, dist: str):
     new_target_folder = target_folder / ext.upper()
     new_target_folder.mkdir(exist_ok=True)
     new_name = normalize(file.name.replace(ext, "")) + ext
-    file.replace(target_folder / new_name)    
+    file.replace(new_target_folder / new_name)
 
 
 def handle_other(file: Path, root_folder: Path, dist: str):
@@ -111,7 +111,7 @@ def handle_other(file: Path, root_folder: Path, dist: str):
     file.replace(target_folder / new_name)
 
 
-def handle_archive(file: Path, root_folder: Path, dist:str):
+def handle_archive(file: Path, root_folder: Path, dist: str):
     target_folder = root_folder / dist
     target_folder.mkdir(exist_ok=True)
     ext = Path(file).suffix
@@ -133,37 +133,29 @@ def handle_folder(folder: Path):
         print(f"Не удалось удалить папку {folder}")
 
 
-
 def main(folder):
     parse_folder(folder)
 
     for file in DOC_DOC:
         handle_image(file, folder, "DOCS")
 
-
     for file in DOCX_DOC:
         handle_image(file, folder, "DOCS")
-
 
     for file in PPTX_DOC:
         handle_image(file, folder, "DOCS")
 
-
     for file in XLSX_DOC:
         handle_image(file, folder, "DOCS")
 
-
     for file in PDF_DOC:
-        handle_image(file, folder, "DOSC")
+        handle_image(file, folder, "DOCS")
 
-    
     for file in TAR_ARCH:
         handle_image(file, folder, "ARCH")
 
-    
     for file in MP3_MUSIC:
         handle_image(file, folder, "MUSIC")
-
 
     for file in JPEG_IMAGES:
         handle_image(file, folder, "IMAGES")
@@ -187,11 +179,8 @@ def main(folder):
         handle_folder(f)
 
 
-
 scan_path = sys.argv[1]
 print(f"Start in folder {scan_path}")
 search_folder = Path(scan_path)
 search_folder = search_folder.resolve()
 main(search_folder)
-    
-
